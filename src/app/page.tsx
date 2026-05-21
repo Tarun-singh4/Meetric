@@ -1,15 +1,70 @@
+"use client"
+import { authClient } from "@/src/lib/auth-client"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { Input } from "@base-ui/react";
 export default function Home() {
+  const { data: session} = authClient.useSession() 
+
+
+  const [name,setName]=useState("");
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+
+  const onSubmit=()=>{
+    authClient.signUp.email({
+      email,name,password
+    },{
+        onSuccess: () => {
+            window.alert("user created successfully")
+        },
+        onError: () => {
+            window.alert("something went wrong")
+    }, });
+  }
+
+  const onLogin=()=>{
+    authClient.signIn.email({
+      email,password
+    },{
+        onSuccess: () => {
+            window.alert("user created successfully")
+        },
+        onError: () => {
+            window.alert("something went wrong")
+    }, });
+  }
+  if(session){
+    return(
+      <div className="flex flex-col p-4 gap-4">
+        <p>logged in as {session.user.name}</p>
+        <Button onClick={()=> authClient.signOut()}>sign out</Button>
+      </div>
+    );
+  }
+
+
   return (
-    <Button>
-      Hello world
-    </Button>
+    <div className="flex flex-col gep-y-10">
+    <div className="flex flex-col gap-4" p-4>
+      <input placeholder="name" value={name} onChange={(e)=>setName(e.target.value)}/>
+      <input placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+      <input placeholder="password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+
+      <button onClick={onSubmit}>create user</button>
+    </div>
+
+
+
+    <div className="flex flex-col gap-4" p-4>
+       <input placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+      <input placeholder="password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+
+      <button onClick={onLogin}>login</button>
+    </div>
+    </div>
   )
 }
 //shadcn@4.7.0
 
-postgresql://neondb_owner:npg_sVK7TeSx3fhN@ep-dark-queen-aq7fkzmx.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require
-
-// npx neonctl@latest init
-
-postgresql://neondb_owner:npg_sVK7TeSx3fhN@ep-dark-queen-aq7fkzmx-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+  
