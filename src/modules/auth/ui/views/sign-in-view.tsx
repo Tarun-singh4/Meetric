@@ -5,7 +5,6 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {OctagonAlertIcon} from "lucide-react"
-
 import {useRouter} from "next/navigation";
 import {Input} from "@/components/ui/input";
 import {authClient} from "@/src/lib/auth-client";
@@ -16,6 +15,8 @@ import {Alert,AlertTitle} from "@/components/ui/alert";
 import { useState } from "react";
 import { on } from "node:stream";
 import { SignUpView } from "./sign-up-view";
+import {FaGithub, FaGoogle} from "react-icons/fa";
+
 const formSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
     password: z.string().min(4, "Password must be at least 4 characters long"),
@@ -35,24 +36,44 @@ export const SignInView = () => {
         },
     });
 
-    const onSubmit=(data: z.infer<typeof formSchema>)=>{
+ const onSubmit=(data: z.infer<typeof formSchema>)=>{
+         setError(null); 
+         setPending(true);
+          authClient.signIn.email({
+             email: data.email,
+             password: data.password,
+             callbackURL: "/"
+         },
+     {
+         onSuccess: () => { 
+             setPending(false); 
+             router.push("/");
+         },
+         onError: ({error}) => {
+             setPending(false);
+             setError(error.message);
+         }
+     });
+     }   
+    
+const onSocial=(provider: "github" | "google")=>{
         setError(null); 
         setPending(true);
-         authClient.signIn.email({
-            email: data.email,
-            password: data.password,
+         authClient.signIn.social({
+            provider: provider,
+            callbackURL: "/"
         },
     {
         onSuccess: () => { 
             setPending(false); 
-            router.push("/");
+           
         },
         onError: ({error}) => {
             setPending(false);
             setError(error.message);
         }
     });
-    }   
+    }
   return (
     <div className="flex flex-col gap-6 items-center justify-center">
         <Card className="overflow-hidden p-0 ">
@@ -113,10 +134,24 @@ export const SignInView = () => {
                                 </span>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
-                                <Button variant="outline" type="button" 
-                                className="w-full" disabled={pending}>Google</Button>
-                                <Button variant="outline" type="button" 
-                                className="w-full" disabled={pending}>Github</Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={()=> onSocial("google")}
+                                    
+                                    type="button" 
+                                    className="w-full"
+                                    disabled={pending}>
+                                    <FaGoogle/>
+                                    </Button>
+                                
+                                <Button 
+                                    variant="outline"
+                                    onClick={()=> onSocial("github")}
+                                    type="button" 
+                                    className="w-full"
+                                    disabled={pending}>
+                                        <FaGithub/>
+                                    </Button>
                             </div>
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
