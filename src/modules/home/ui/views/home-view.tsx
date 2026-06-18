@@ -1,4 +1,4 @@
-+"use client";
+"use client";
 import { useRouter } from "next/navigation";
 import {authClient} from "@/src/lib/auth-client";
 import { Button } from "@base-ui/react";
