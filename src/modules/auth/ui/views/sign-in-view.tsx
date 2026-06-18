@@ -163,7 +163,7 @@ const onSocial=(provider: "github" | "google")=>{
                      </form>
                 </Form>
 
-                 <div className="bg-radial from-emerald-700 via-teal-800 to-slate-900 hidden md:flex flex-col
+                 <div className="bg-radial from-sidebar-accent to-sidebar hidden md:flex flex-col
                  gap-y-4 items-center justify-center">
                     <img src="/logo.svg" alt="logo" className="h-[110px] w-[110px] mt-7 mr-3" />
                     <p className="text-4xl font-bold text-white tracking-tight">Meetric</p>
