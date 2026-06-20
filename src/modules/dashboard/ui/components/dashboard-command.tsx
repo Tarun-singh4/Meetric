@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import {Dispatch, SetStateAction,useState} from "react";
 import { 
-  CommandDialog, 
+    CommandResponsiveDialog,  
   CommandInput,
   CommandItem, 
   CommandList
@@ -16,7 +16,7 @@ interface Props{
 
 export const DashboardCommand = ({open,setOpen}:Props) => {
     return(
-        <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
             <CommandInput
             placeholder="find a meeeting or agent"/>
 
@@ -25,7 +25,7 @@ export const DashboardCommand = ({open,setOpen}:Props) => {
                     Test
                 </CommandItem>
             </CommandList>
-        </CommandDialog>
+        </CommandResponsiveDialog>
     )
 };
 
