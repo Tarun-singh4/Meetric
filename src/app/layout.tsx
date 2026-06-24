@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter} from "next/font/google";
 import "./globals.css";
 import {TRPCReactProvider} from "@/src/trpc/client";
-import {Toaster} from "@/components/ui/sonner"
+import {Toaster} from "@/components/ui/sonner";
+import {NuqsAdapter} from "nuqs/adapters/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <NuqsAdapter>
     <TRPCReactProvider>
     <html
       lang="en"
@@ -33,5 +35,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
     </TRPCReactProvider>
+    </NuqsAdapter>
   );
 }
