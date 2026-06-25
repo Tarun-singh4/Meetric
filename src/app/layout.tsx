@@ -25,16 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <NuqsAdapter>
-    <TRPCReactProvider>
-    <html
-      lang="en"
-      className={`${inter.className}  antialiased`}
-    >
-      <Toaster/>
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-    </TRPCReactProvider>
+      <NuqsAdapter>
+      <TRPCReactProvider>
+        <html lang="en">
+          <body
+            className={`${inter.className} antialiased`}
+          >
+            <Toaster />
+            {children}
+          </body>
+        </html>
+      </TRPCReactProvider>
     </NuqsAdapter>
   );
 }
