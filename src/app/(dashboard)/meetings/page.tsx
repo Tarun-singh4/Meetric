@@ -12,10 +12,14 @@ import type { SearchParams } from "nuqs/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { auth } from "@/src/lib/auth";
 import { MeetingsListHeader } from "@/src/modules/meetings/ui/components/meetings-list-header";
+import { loadSearchParams } from "@/src/modules/meetings/params";
 
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
 
-
-const Page=async()=>{
+const Page=async({ searchParams }: Props)=>{
+  const filters = await loadSearchParams(searchParams);
     const session=await auth.api.getSession({
         headers: await headers()
       });
@@ -26,7 +30,9 @@ const Page=async()=>{
 
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
-    trpc.meetings.getMany.queryOptions({})
+    trpc.meetings.getMany.queryOptions({
+      ...filters,
+    })
   );
     return(
          <>
