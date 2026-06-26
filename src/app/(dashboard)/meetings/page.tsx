@@ -11,10 +11,18 @@ import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { auth } from "@/src/lib/auth";
+import { MeetingsListHeader } from "@/src/modules/meetings/ui/components/meetings-list-header";
 
 
 
-const Page=()=>{
+const Page=async()=>{
+    const session=await auth.api.getSession({
+        headers: await headers()
+      });
+    
+      if(!session){
+        redirect("/auth/sign-in");
+      }
 
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(
@@ -22,7 +30,7 @@ const Page=()=>{
   );
     return(
          <>
-      
+      <MeetingsListHeader/>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<MeetingsViewLoading />}>
           <ErrorBoundary fallback={<MeetingsViewError />}>
