@@ -36,6 +36,7 @@ export const CommandSelect = ({
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((option) => option.value === value);
 
+   
   const handleOpenChange = (open: boolean) => {
     onSearch?.("");
     setOpen(open);
